@@ -1,0 +1,91 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Vacation Spots
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Vacation Spots</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <div id="top_container">
+    <p-card header="Vacation Spot Details">
+        <span class="p-float-label field" style="margin-bottom: 30px;">
+          <input id="float-input" type="text" pInputText [(ngModel)]="location"> 
+          <label for="float-input">Location</label>
+        </span>
+        
+        <span class="p-float-label field">
+          <p-calendar id="date-input" dateFormat="mm-dd-yy" inputId="dateformat" [(ngModel)]="date_to_visit"></p-calendar>
+          <label for="date-input">Date To Visit</label>
+        </span>
+
+        <ng-template pTemplate="footer">
+          <p-button label="Save" icon="pi pi-check" (click)="onAdd()"></p-button>
+          <p-button label="Cancel" icon="pi pi-times" styleClass="p-button-secondary" [style]="{'margin-left': '.5em'}" (click)="clearFields()"></p-button>
+      </ng-template>
+    </p-card>
+
+    <div class="card" style="margin-top: 40px;">
+      <h5>Vacation Spot List</h5>
+      <p-table [(value)]="vacation_spots" dataKey="id" editMode="row" responsiveLayout="scroll">
+          <ng-template pTemplate="header">
+              <tr>
+                  <th>Location</th>
+                  <th>Date To Visit</th>
+                  <th>Current Temperature</th>
+                  <th style="width:8rem"></th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-vacation_spot let-editing="editing" let-ri="rowIndex">
+              <tr [pEditableRow]="vacation_spot">
+                  <td>
+                      <p-cellEditor>
+                          <ng-template pTemplate="input">
+                              <input pInputText type="text" [(ngModel)]="vacation_spot.location">
+                          </ng-template>
+                          <ng-template pTemplate="output">
+                              {{vacation_spot.location}}
+                          </ng-template>
+                      </p-cellEditor>
+                  </td>
+                  <td>
+                      <p-cellEditor>
+                          <ng-template pTemplate="input">
+                            <input pInputText type="text" [(ngModel)]="vacation_spot.date_to_visit">
+                          </ng-template>
+                          <ng-template pTemplate="output">
+                              {{vacation_spot.date_to_visit}}
+                          </ng-template>
+                      </p-cellEditor>
+                  </td>
+                  <td>
+                    <p-cellEditor>
+                      <ng-template pTemplate="input">
+                        <input pInputText disabled="true" type="text" [(ngModel)]="vacation_spot.current_temperature">
+                      </ng-template>
+                      <ng-template pTemplate="output">
+                          {{vacation_spot.current_temperature}}
+                      </ng-template>
+                    </p-cellEditor>
+
+                  </td>
+                  <td style="text-align:center">
+                    <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(vacation_spot)" class="p-button-rounded p-button-text"></button>
+                    <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(vacation_spot)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                    <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(vacation_spot, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                  </td>
+              </tr>
+          </ng-template>
+      </p-table>
+      <p-button id="top-space" label="Delete All" icon="pi pi-minus-circle" styleClass="p-button-danger" (click)="onDelete()"></p-button>
+    </div>
+  </div>
+
+    
+</ion-content>
